@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #184d47;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1a6b63;
+}
+
+/* Smooth anchor scrolling offset for fixed navbar */
+html {
+  scroll-padding-top: 80px;
+}
+
+/* Selection highlight */
+::selection {
+  background-color: #e6f4f1;
+  color: #184d47;
+}
