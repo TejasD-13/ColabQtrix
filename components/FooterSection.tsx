@@ -1,107 +1,219 @@
-interface FooterLink {
-  label: string;
-  href: string;
-}
+'use client'
 
-interface FooterContact {
-  address: string;
-  email: string;
-  phone: string;
+import Link from 'next/link'
+import { MapPin, Mail, Phone, Globe, ArrowUp } from 'lucide-react'
+
+interface FooterLink {
+  label: string
+  href: string
+  badge?: string
 }
 
 interface FooterSectionProps {
-  componentId?: string;
-  about: string;
-  companyLinks: FooterLink[];
-  contact: FooterContact;
-  copyright: string;
-  _sectionId?: number;
+  componentId?: string
+  aboutHeading: string
+  aboutText: string
+  companyHeading: string
+  companyLinks: FooterLink[]
+  contactHeading: string
+  address: string
+  emails: string[]
+  phones: string[]
+  website: string
+  websiteUrl: string
+  copyright: string
+  visitorCount: string[]
+  _sectionId?: number
 }
 
 export default function FooterSection({
-  about,
+  aboutHeading,
+  aboutText,
+  companyHeading,
   companyLinks,
-  contact,
+  contactHeading,
+  address,
+  emails,
+  phones,
+  website,
+  websiteUrl,
   copyright,
+  visitorCount
 }: FooterSectionProps) {
+
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
+
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-          {/* About */}
-          <div className="lg:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">C</span>
-              </div>
-              <span className="font-bold text-white text-xl">ColabQtrix Technologies</span>
-            </div>
-            <p className="text-gray-400 leading-relaxed max-w-sm">{about}</p>
-            {/* Social links */}
-            <div className="flex gap-3 mt-6">
-              {['LinkedIn', 'Twitter', 'GitHub'].map((social) => (
-                <a
-                  key={social}
-                  href="#"
-                  className="w-9 h-9 bg-gray-800 hover:bg-primary rounded-lg flex items-center justify-center transition-colors text-gray-400 hover:text-white text-xs"
-                >
-                  {social.charAt(0)}
-                </a>
-              ))}
-            </div>
+    <footer className="bg-gray-50 border-t border-gray-200 relative">
+
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-14">
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+
+          {/* ABOUT */}
+          <div>
+            <h4 className="font-bold text-gray-900 mb-3">
+              {aboutHeading}
+            </h4>
+
+            <p className="text-gray-500 text-sm leading-relaxed">
+              {aboutText}
+            </p>
           </div>
 
-          {/* Company links */}
+
+          {/* COMPANY LINKS */}
           <div>
-            <h4 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Company</h4>
+
+            <h4 className="font-bold text-gray-900 mb-5">
+              {companyHeading}
+            </h4>
+
             <ul className="space-y-3">
-              {companyLinks.map((link) => (
-                <li key={link.label}>
-                  <a
+
+              {companyLinks.map((link, idx) => (
+
+                <li key={idx}>
+
+                  <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-primary transition-colors flex items-center gap-1.5 group"
+                    className="text-gray-500 text-sm hover:text-[#2f5f5b] transition-colors flex items-center gap-2"
                   >
-                    <span className="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
                     {link.label}
-                  </a>
+
+                    {link.badge && (
+                      <span className="inline-block bg-[#e6f4f3] border border-[#2f5f5b]/30 text-[#2f5f5b] text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                        {link.badge}
+                      </span>
+                    )}
+
+                  </Link>
+
                 </li>
+
               ))}
+
             </ul>
+
           </div>
 
-          {/* Contact */}
+
+          {/* CONTACT */}
           <div>
-            <h4 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Contact</h4>
-            <ul className="space-y-3 text-gray-400 text-sm">
-              <li className="flex items-start gap-2">
-                <span className="mt-0.5">📍</span>
-                <span>{contact.address}</span>
+
+            <h4 className="font-bold text-gray-900 mb-5">
+              {contactHeading}
+            </h4>
+
+            <ul className="space-y-4">
+
+              {/* Address */}
+              <li className="flex items-start gap-3">
+                <MapPin size={15} className="text-[#2f5f5b] mt-0.5 flex-shrink-0" />
+                <span className="text-gray-500 text-sm leading-relaxed">
+                  {address}
+                </span>
               </li>
-              <li>
-                <a href={`mailto:${contact.email}`} className="hover:text-primary transition-colors flex items-center gap-2">
-                  <span>📧</span> {contact.email}
+
+
+              {/* Emails */}
+              <li className="flex items-start gap-3">
+                <Mail size={15} className="text-[#2f5f5b] mt-0.5 flex-shrink-0" />
+
+                <div className="flex flex-col gap-1">
+
+                  {emails.map((email, idx) => (
+                    <a
+                      key={idx}
+                      href={`mailto:${email}`}
+                      className="text-gray-500 text-sm hover:text-[#2f5f5b]"
+                    >
+                      {email}
+                    </a>
+                  ))}
+
+                </div>
+              </li>
+
+
+              {/* Phones */}
+              <li className="flex items-start gap-3">
+                <Phone size={15} className="text-[#2f5f5b] mt-0.5 flex-shrink-0" />
+
+                <div className="flex flex-col gap-1">
+
+                  {phones.map((phone, idx) => (
+                    <span key={idx} className="text-gray-500 text-sm">
+                      {phone}
+                    </span>
+                  ))}
+
+                </div>
+              </li>
+
+
+              {/* Website */}
+              <li className="flex items-center gap-3">
+                <Globe size={15} className="text-[#2f5f5b] flex-shrink-0" />
+
+                <a
+                  href={websiteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-500 text-sm hover:text-[#2f5f5b]"
+                >
+                  {website}
                 </a>
+
               </li>
-              <li>
-                <a href={`tel:${contact.phone}`} className="hover:text-primary transition-colors flex items-center gap-2">
-                  <span>📞</span> {contact.phone}
-                </a>
-              </li>
+
             </ul>
+
           </div>
+
         </div>
 
-        {/* Bottom bar */}
-        <div className="pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-gray-500 text-sm">{copyright}</p>
-          <a
-            href="#home"
-            className="text-gray-400 hover:text-primary transition-colors text-sm flex items-center gap-1"
-          >
-            Back to top ↑
-          </a>
-        </div>
       </div>
+
+
+      {/* COPYRIGHT */}
+      <div className="border-t border-gray-200 py-5">
+
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+
+          <p className="text-gray-400 text-sm">
+            {copyright}
+          </p>
+
+          {/* Visitor Counter */}
+          <div className="flex">
+
+            {visitorCount.map((digit, idx) => (
+
+              <div
+                key={idx}
+                className="w-7 h-9 bg-[#2f5f5b] text-white text-sm font-mono font-bold flex items-center justify-center border-r border-white/20 last:border-0"
+              >
+                {digit}
+              </div>
+
+            ))}
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      {/* BACK TO TOP */}
+      <button
+        onClick={scrollToTop}
+        className="fixed bottom-6 right-6 w-12 h-12 bg-[#2f5f5b] text-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#1f4a47] transition z-40"
+      >
+        <ArrowUp size={20} />
+      </button>
+
     </footer>
-  );
+  )
 }

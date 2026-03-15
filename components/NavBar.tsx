@@ -1,97 +1,194 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { Menu, X, Mail, Phone } from 'lucide-react'
 
 interface NavLink {
-  label: string;
-  href: string;
+  label: string
+  href: string
 }
 
 interface NavBarProps {
-  componentId?: string;
-  logo: { text: string; icon: string };
-  links: NavLink[];
-  contactInfo: { email: string; phone: string };
-  _sectionId?: number;
+  componentId?: string
+  logo: { text: string; icon: string }
+  links: NavLink[]
+  contactInfo: { email: string; phone: string }
+  _sectionId?: number
 }
 
 export default function NavBar({ logo, links, contactInfo, _sectionId }: NavBarProps) {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [activeLink, setActiveLink] = useState('')
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    const handleScroll = () => setScrolled(window.scrollY > 10)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
+
+  const closeMenu = () => setMenuOpen(false)
 
   return (
-    <nav
-      className={`${_sectionId ? 'relative' : 'fixed top-0 left-0 right-0'} z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-sm'
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled ? 'bg-white shadow-md' : 'bg-white'
         }`}
-    >
-      {/* Top info bar */}
-      <div className="bg-primary text-white text-sm py-1.5 px-4 text-center hidden md:block">
-        <span className="mr-6">📧 {contactInfo.email}</span>
-        <span>📞 {contactInfo.phone}</span>
-      </div>
+      >
+        <div className="max-w-7xl mx-auto px-6">
+          <nav className="flex items-center justify-between h-24">
 
-      {/* Main nav */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="#home" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-md group-hover:shadow-primary/30 transition-shadow">
-              <span className="text-white font-bold text-xl">C</span>
+            {/* Logo */}
+            <div className="flex items-center gap-12">
+              <Link href="/" className="flex items-center gap-3">
+
+                {/* Hardcoded logo */}
+                <div className="relative w-12 h-12">
+                  <Image
+                    src="/images/logo.png"
+                    alt="Logo"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+
+                <span className="text-lg font-semibold text-gray-700">
+                  {logo.text}
+                </span>
+              </Link>
+
+              {/* Desktop Links */}
+              <ul className="hidden md:flex items-center gap-8">
+                {links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      onClick={() => setActiveLink(link.label)}
+                      className={`text-[15px] font-medium relative pb-1 ${
+                        activeLink === link.label
+                          ? 'text-gray-900 border-b-2 border-gray-400'
+                          : 'text-gray-600 hover:text-gray-900'
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <span className="font-bold text-primary text-lg hidden sm:block">{logo.text}</span>
+
+            {/* Desktop Contact */}
+            <div className="hidden md:flex items-center text-sm text-gray-600 gap-2">
+              <a href={`mailto:${contactInfo.email}`} className="hover:text-gray-900 transition">
+                {contactInfo.email}
+              </a>
+              <span className="text-gray-400">|</span>
+              <a href={`tel:${contactInfo.phone.replace(/\s/g, '')}`} className="hover:text-gray-900 transition">
+                {contactInfo.phone}
+              </a>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden p-2 text-gray-700 hover:text-primary transition"
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open menu"
+            >
+              <Menu size={26} />
+            </button>
+
+          </nav>
+        </div>
+      </header>
+
+      {/* Backdrop */}
+      <div
+        className={`fixed inset-0 z-[60] bg-black/50 transition-opacity duration-300 md:hidden ${
+          menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={closeMenu}
+      />
+
+      {/* Mobile Drawer */}
+      <aside
+        className={`fixed top-0 left-0 h-full w-72 bg-white z-[70] shadow-2xl flex flex-col transition-transform duration-300 md:hidden ${
+          menuOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        {/* Drawer Header */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+          <Link href="/" onClick={closeMenu} className="flex items-center gap-2">
+
+            <div className="relative w-9 h-9">
+              <Image src="/images/logo.png" alt="Logo" fill className="object-contain" />
+            </div>
+
+            <span className="font-semibold text-gray-800 text-sm">
+              {logo.text}
+            </span>
           </Link>
 
-          {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-8">
-            {links.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="text-gray-700 hover:text-primary font-medium transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-
-          {/* Mobile hamburger */}
           <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100"
+            onClick={closeMenu}
+            className="p-1.5 rounded text-gray-500 hover:text-primary transition"
           >
-            <div className="w-5 h-0.5 bg-current mb-1 transition-all" />
-            <div className="w-5 h-0.5 bg-current mb-1 transition-all" />
-            <div className="w-5 h-0.5 bg-current transition-all" />
+            <X size={22} />
           </button>
         </div>
-      </div>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 px-4 py-3 space-y-2">
-          {links.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className="block py-2 px-3 text-gray-700 hover:text-primary hover:bg-mint rounded-lg transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
-          <div className="pt-2 border-t border-gray-100 text-sm text-gray-500">
-            <div>{contactInfo.email}</div>
-            <div>{contactInfo.phone}</div>
-          </div>
+        {/* Nav Links */}
+        <nav className="flex-1 px-4 py-8">
+          <ul className="flex flex-col gap-1">
+            {links.map((link) => (
+              <li key={link.label}>
+                <Link
+                  href={link.href}
+                  onClick={() => {
+                    setActiveLink(link.label)
+                    closeMenu()
+                  }}
+                  className={`flex items-center px-4 py-3 rounded-lg text-base font-medium transition ${
+                    activeLink === link.label
+                      ? 'bg-gray-100 text-gray-900'
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* Contact Info */}
+        <div className="px-6 py-6 border-t border-gray-100 space-y-3">
+
+          <a
+            href={`mailto:${contactInfo.email}`}
+            className="flex items-center gap-3 text-sm text-gray-500 hover:text-primary"
+          >
+            <Mail size={15} />
+            {contactInfo.email}
+          </a>
+
+          <a
+            href={`tel:${contactInfo.phone.replace(/\s/g, '')}`}
+            className="flex items-center gap-3 text-sm text-gray-500 hover:text-primary"
+          >
+            <Phone size={15} />
+            {contactInfo.phone}
+          </a>
+
         </div>
-      )}
-    </nav>
-  );
+      </aside>
+    </>
+  )
 }

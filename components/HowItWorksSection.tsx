@@ -1,67 +1,120 @@
+'use client'
+
+import Image from "next/image"
+
 interface Step {
-  id: string;
-  stepNumber: number;
-  title: string;
-  description: string;
+  id: string
+  stepNumber: number
+  title: string
+  description: string
+}
+
+interface BottomImage {
+  src: string
+  alt: string
 }
 
 interface HowItWorksSectionProps {
-  componentId?: string;
-  badge: string;
-  heading: string;
-  steps: Step[];
-  _sectionId?: number;
+  componentId?: string
+  badge: string
+  heading: string
+  steps: Step[]
+  bottomImage?: BottomImage
+  _sectionId?: number
 }
 
 export default function HowItWorksSection({
   badge,
   heading,
   steps,
+  bottomImage
 }: HowItWorksSectionProps) {
+
   return (
-    <section className="py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Badge */}
-        <div className="flex justify-center mb-4">
-          <span className="bg-mint text-primary text-sm font-semibold px-5 py-1.5 rounded-full tracking-wider uppercase">
+    <section className="py-20 md:py-28 bg-white">
+
+      <div className="max-w-7xl mx-auto px-6">
+
+        {/* Header */}
+        <div className="text-center mb-20">
+
+          <span className="px-4 py-1.5 bg-green-100 text-green-800 text-xs font-semibold rounded-lg">
             {badge}
           </span>
+
+          <h2 className="text-4xl font-semibold text-gray-900 mt-4">
+            {heading}
+          </h2>
+
         </div>
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-16">
-          {heading}
-        </h2>
 
         {/* Steps */}
-        <div className="relative">
-          {/* Connecting line */}
-          <div className="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-primary/20 via-primary to-primary/20" />
+        <div className="relative grid grid-cols-2 md:grid-cols-4 gap-16 text-center">
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {steps.map((step, index) => (
-              <div key={step.id} className="relative flex flex-col items-center text-center group">
-                {/* Step number circle */}
-                <div className="w-24 h-24 bg-white border-4 border-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/10 group-hover:bg-primary group-hover:text-white transition-all duration-300 mb-6 z-10">
-                  <span className="text-2xl font-extrabold text-primary group-hover:text-white transition-colors">
-                    {String(step.stepNumber).padStart(2, '0')}
-                  </span>
-                </div>
+          {/* Connector 1 */}
+          <svg
+            className="hidden md:block absolute top-10 left-[13%] w-[20%]"
+            viewBox="0 0 200 60"
+          >
+            <path d="M0 40 Q100 0 200 40" stroke="#2f5f5b" strokeWidth="2" strokeDasharray="6 8" fill="none" />
+          </svg>
 
-                {/* Arrow between steps (mobile) */}
-                {index < steps.length - 1 && (
-                  <div className="lg:hidden absolute -bottom-6 left-1/2 -translate-x-1/2 text-primary/40">
-                    ↓
-                  </div>
-                )}
+          {/* Connector 2 */}
+          <svg
+            className="hidden md:block absolute top-10 left-[38%] w-[20%]"
+            viewBox="0 0 200 60"
+          >
+            <path d="M0 20 Q100 60 200 20" stroke="#2f5f5b" strokeWidth="2" strokeDasharray="6 8" fill="none" />
+          </svg>
 
-                <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors">
-                  {step.title}
-                </h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{step.description}</p>
+          {/* Connector 3 */}
+          <svg
+            className="hidden md:block absolute top-10 left-[63%] w-[20%]"
+            viewBox="0 0 200 60"
+          >
+            <path d="M0 40 Q100 0 200 40" stroke="#2f5f5b" strokeWidth="2" strokeDasharray="6 8" fill="none" />
+          </svg>
+
+          {steps.map((step) => (
+            <div key={step.id} className="flex flex-col items-center">
+
+              {/* Circle */}
+              <div className="w-16 h-16 rounded-full bg-[#2f5f5b] text-white flex items-center justify-center text-xl font-semibold mb-6 relative z-10">
+                {step.stepNumber}
               </div>
-            ))}
-          </div>
+
+              {/* Title */}
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                {step.title}
+              </h3>
+
+              {/* Description */}
+              <p className="text-gray-600 text-[15px] leading-relaxed max-w-xs">
+                {step.description}
+              </p>
+
+            </div>
+          ))}
+
         </div>
+
       </div>
+
+      {/* Bottom Image */}
+      {bottomImage?.src && (
+        <div className="max-w-6xl mx-auto mt-24 px-6 flex justify-center">
+
+          <Image
+            src={bottomImage.src}
+            alt={bottomImage.alt}
+            width={1200}
+            height={260}
+            className="w-full max-w-5xl rounded-2xl"
+          />
+
+        </div>
+      )}
+
     </section>
-  );
+  )
 }

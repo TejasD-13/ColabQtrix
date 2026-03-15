@@ -1,12 +1,21 @@
+'use client'
+
+import Image from "next/image"
+
+interface FounderImage {
+  src: string
+  alt: string
+}
+
 interface FounderSectionProps {
-  componentId?: string;
-  badge: string;
-  heading: string;
-  quote: string;
-  founderName: string;
-  founderTitle: string;
-  founderImage?: string;
-  _sectionId?: number;
+  componentId?: string
+  badge: string
+  heading: string
+  quote: string[] | string
+  founderName: string
+  founderTitle: string
+  founderImage?: FounderImage
+  _sectionId?: number
 }
 
 export default function FounderSection({
@@ -15,60 +24,101 @@ export default function FounderSection({
   quote,
   founderName,
   founderTitle,
-  founderImage,
+  founderImage
 }: FounderSectionProps) {
+
+  const paragraphs = Array.isArray(quote) ? quote : [quote]
+
   return (
-    <section className="py-24 bg-white">
+    <section id="founder" className="py-20 md:py-28 bg-white">
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         {/* Badge */}
-        <div className="flex justify-center mb-4">
-          <span className="bg-mint text-primary text-sm font-semibold px-5 py-1.5 rounded-full tracking-wider uppercase">
+        <div className="text-center mb-12">
+          <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-4 py-2 rounded-lg">
             {badge}
           </span>
         </div>
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-16">
-          {heading}
-        </h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
-          {/* Left: Founder portrait placeholder */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+
+          {/* LEFT: Founder Image */}
           <div className="flex justify-center">
-            <div className="relative">
-              {founderImage ? (
-                <img src={founderImage} alt={founderName} className="w-64 h-80 object-cover rounded-2xl shadow-xl shadow-primary/20 bg-gray-100" />
+
+            <div className="w-full max-w-sm rounded-2xl overflow-hidden shadow-xl border border-gray-200 aspect-[3/4] relative bg-gray-50">
+
+              {founderImage?.src ? (
+                <Image
+                  src={founderImage.src}
+                  alt={founderImage.alt || founderName}
+                  fill
+                  className="object-cover"
+                />
               ) : (
-                <div className="w-64 h-80 bg-gradient-to-br from-primary to-primary-light rounded-2xl flex items-center justify-center shadow-xl shadow-primary/20">
-                  <div className="text-center text-white space-y-3">
-                    <div className="text-7xl">👤</div>
-                    <div className="font-bold text-xl">{founderName}</div>
-                    <div className="text-white/80 text-sm">{founderTitle}</div>
-                  </div>
+
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-gray-300">
+
+                  <svg viewBox="0 0 100 100" width="80" height="80" fill="none">
+                    <circle cx="50" cy="35" r="22" stroke="#d1d5db" strokeWidth="3" />
+                    <path d="M10 90 Q10 65 50 65 Q90 65 90 90" stroke="#d1d5db" strokeWidth="3" fill="none" />
+                  </svg>
+
+                  <p className="text-sm text-gray-400 font-medium">
+                    Founder Photo
+                  </p>
+
+                  <p className="text-xs text-gray-300">
+                    Add to /public/images/founder.jpg
+                  </p>
+
                 </div>
+
               )}
-              {/* Decorative ring */}
-              <div className="absolute -inset-3 border-2 border-primary/20 rounded-2xl -z-10" />
+
             </div>
+
           </div>
 
-          {/* Right: Quote */}
-          <div className="space-y-6">
-            {/* Large quote mark */}
-            <div className="text-8xl text-primary/20 font-serif leading-none select-none">&ldquo;</div>
-            <blockquote className="text-gray-700 text-lg leading-relaxed -mt-8">
-              {quote}
-            </blockquote>
-            <div className="flex items-center gap-4 pt-4 border-t border-gray-100">
-              <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-lg">
-                {founderName.charAt(0)}
-              </div>
-              <div>
-                <div className="font-bold text-gray-900">{founderName}</div>
-                <div className="text-primary text-sm font-medium">{founderTitle}</div>
-              </div>
+
+          {/* RIGHT: Message Card */}
+          <div className="bg-[#2b6461] rounded-2xl p-8 md:p-10 text-white shadow-xl">
+
+            <h2 className="text-2xl md:text-3xl font-bold mb-6">
+              {heading}
+            </h2>
+
+            <div className="space-y-4">
+
+              {paragraphs.map((paragraph, idx) => (
+                <p
+                  key={idx}
+                  className="text-white/85 leading-relaxed text-sm md:text-base"
+                >
+                  {paragraph}
+                </p>
+              ))}
+
             </div>
+
+            <div className="mt-8 pt-6 border-t border-white/20">
+
+              <p className="font-bold text-white">
+                {founderName}
+              </p>
+
+              <p className="text-white/60 text-sm">
+                {founderTitle}
+              </p>
+
+            </div>
+
           </div>
+
         </div>
+
       </div>
+
     </section>
-  );
+  )
 }

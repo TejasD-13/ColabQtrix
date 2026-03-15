@@ -9,6 +9,10 @@ import TestimonialsSection from '@/components/TestimonialsSection';
 import ContactSection from '@/components/ContactSection';
 import FooterSection from '@/components/FooterSection';
 import CustomSection from '@/components/CustomSection';
+import ServicesSection from '@/components/ServicesSection';
+import PrivacyPolicySection from '@/components/PrivacyPolicySection';
+import TermsSection from '@/components/TermsSection';
+import CareersSection from '@/components/CareersSection';
 
 // Map of section type -> React component
 // Structured for easy extension: global components (navbar/footer) can be
@@ -17,12 +21,16 @@ const COMPONENT_MAP: Record<string, React.ComponentType<any>> = {
   navbar: NavBar,
   hero: HeroSection,
   about: AboutSection,
-  why_choose_us: WhyChooseUsSection,
+  
   founder: FounderSection,
   how_it_works: HowItWorksSection,
   testimonials: TestimonialsSection,
   contact: ContactSection,
   footer: FooterSection,
+  services: ServicesSection,
+  privacy: PrivacyPolicySection,
+  terms: TermsSection,
+  careers: CareersSection,
   custom: CustomSection,
 };
 
