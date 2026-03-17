@@ -39,12 +39,11 @@ export default function NavBar({ logo, links, contactInfo, _sectionId }: NavBarP
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'bg-white shadow-md' : 'bg-white'
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md' : 'bg-white'
+          }`}
       >
-        <div className="max-w-7xl mx-auto px-6">
-          <nav className="flex items-center justify-between h-24">
+        <div className="max-w-7xl mx-auto px-2">
+          <nav className="flex items-center justify-between h-16">
 
             {/* Logo */}
             <div className="flex items-center gap-12">
@@ -72,11 +71,10 @@ export default function NavBar({ logo, links, contactInfo, _sectionId }: NavBarP
                     <Link
                       href={link.href}
                       onClick={() => setActiveLink(link.label)}
-                      className={`text-[15px] font-medium relative pb-1 ${
-                        activeLink === link.label
-                          ? 'text-gray-900 border-b-2 border-gray-400'
-                          : 'text-gray-600 hover:text-gray-900'
-                      }`}
+                      className={`text-[15px] font-medium relative pb-1 ${activeLink === link.label
+                        ? 'text-gray-900 border-b-2 border-gray-400'
+                        : 'text-gray-600 hover:text-gray-900'
+                        }`}
                     >
                       {link.label}
                     </Link>
@@ -111,17 +109,15 @@ export default function NavBar({ logo, links, contactInfo, _sectionId }: NavBarP
 
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 z-[60] bg-black/50 transition-opacity duration-300 md:hidden ${
-          menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
+        className={`fixed inset-0 z-[60] bg-black/50 transition-opacity duration-300 md:hidden ${menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
         onClick={closeMenu}
       />
 
       {/* Mobile Drawer */}
       <aside
-        className={`fixed top-0 left-0 h-full w-72 bg-white z-[70] shadow-2xl flex flex-col transition-transform duration-300 md:hidden ${
-          menuOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed top-0 left-0 h-full w-72 bg-white z-[70] shadow-2xl flex flex-col transition-transform duration-300 md:hidden ${menuOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         {/* Drawer Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
@@ -155,11 +151,10 @@ export default function NavBar({ logo, links, contactInfo, _sectionId }: NavBarP
                     setActiveLink(link.label)
                     closeMenu()
                   }}
-                  className={`flex items-center px-4 py-3 rounded-lg text-base font-medium transition ${
-                    activeLink === link.label
-                      ? 'bg-gray-100 text-gray-900'
-                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                  }`}
+                  className={`flex items-center px-4 py-3 rounded-lg text-base font-medium transition ${activeLink === link.label
+                    ? 'bg-gray-100 text-gray-900'
+                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                    }`}
                 >
                   {link.label}
                 </Link>

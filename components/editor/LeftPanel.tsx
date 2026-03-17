@@ -2,18 +2,29 @@
 
 import React from 'react';
 import { useEditor } from './EditorProvider';
-import { PlusCircle } from 'lucide-react';
+import { 
+    LayoutTemplate, 
+    ImagePlay, 
+    Info, 
+    ShieldCheck, 
+    User, 
+    Settings, 
+    MessageSquareQuote, 
+    Mail, 
+    Code2,
+    Plus
+} from 'lucide-react';
 
 const AVAILABLE_COMPONENTS = [
-    { type: 'navbar', label: 'Navigation Bar' },
-    { type: 'hero', label: 'Hero Section' },
-    { type: 'about', label: 'About Us' },
-    { type: 'why_choose_us', label: 'Why Choose Us' },
-    { type: 'founder', label: 'Founder Message' },
-    { type: 'how_it_works', label: 'How It Works' },
-    { type: 'testimonials', label: 'Testimonials' },
-    { type: 'contact', label: 'Contact' },
-    { type: 'custom', label: 'Custom Section' },
+    { type: 'navbar', label: 'Navigation Bar', icon: LayoutTemplate },
+    { type: 'hero', label: 'Hero Section', icon: ImagePlay },
+    { type: 'about', label: 'About Us', icon: Info },
+    { type: 'why_choose_us', label: 'Why Choose Us', icon: ShieldCheck },
+    { type: 'founder', label: 'Founder Message', icon: User },
+    { type: 'how_it_works', label: 'How It Works', icon: Settings },
+    { type: 'testimonials', label: 'Testimonials', icon: MessageSquareQuote },
+    { type: 'contact', label: 'Contact', icon: Mail },
+    { type: 'custom', label: 'Custom Section', icon: Code2 },
 ];
 
 // Default content stubs for new sections
@@ -95,27 +106,44 @@ export default function LeftPanel() {
     };
 
     return (
-        <div className="w-72 bg-white border-r flex flex-col h-full shrink-0 shadow-[4px_0_24px_-10px_rgba(0,0,0,0.1)] z-10">
-            <div className="p-6 border-b border-gray-100 bg-gray-50/50">
-                <h2 className="font-bold text-gray-800 text-lg">Components</h2>
-                <p className="text-xs text-gray-500 mt-1">Drag or click to add to page</p>
+        <div className="w-[280px] bg-[#0f1115] border-r border-[#1f2229] flex flex-col h-full shrink-0 z-10">
+            
+            {/* Header */}
+            <div className="px-5 py-4 border-b border-[#1f2229] bg-[#0a0b0d]">
+                <h2 className="font-semibold text-gray-200 text-sm tracking-wide">Add Elements</h2>
+                <p className="text-[11px] text-gray-500 mt-1 font-medium">Click to append to your canvas</p>
             </div>
-            <div className="p-4 flex flex-col gap-2 overflow-y-auto">
-                <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-2 px-2">Available Blocks</div>
-                {AVAILABLE_COMPONENTS.map((comp) => (
-                    <button
-                        key={comp.type}
-                        onClick={() => handleAddSection(comp.type)}
-                        className="group flex items-center justify-between p-3.5 bg-white border border-gray-100 rounded-xl hover:border-blue-500 hover:shadow-md hover:shadow-blue-500/10 transition-all duration-200 text-left"
-                    >
-                        <span className="text-sm font-medium text-gray-700 group-hover:text-blue-700 transition-colors">
-                            {comp.label}
-                        </span>
-                        <div className="bg-gray-50 p-1.5 rounded-lg group-hover:bg-blue-50 transition-colors">
-                            <PlusCircle size={16} className="text-gray-400 group-hover:text-blue-600 transition-colors" />
-                        </div>
-                    </button>
-                ))}
+
+            {/* Component List */}
+            <div className="p-3 flex flex-col gap-1 overflow-y-auto custom-scrollbar">
+                
+                <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-2 mb-2 px-2">
+                    Sections Library
+                </div>
+                
+                <div className="grid grid-cols-2 gap-2 mt-1">
+                    {AVAILABLE_COMPONENTS.map((comp) => {
+                        const Icon = comp.icon;
+                        return (
+                            <button
+                                key={comp.type}
+                                onClick={() => handleAddSection(comp.type)}
+                                className="group relative flex flex-col items-center justify-center gap-2 p-4 bg-[#14161b] border border-[#232730] rounded-xl hover:bg-[#1c1f26] hover:border-[#3b82f6]/50 transition-all duration-200"
+                            >
+                                <Icon size={20} className="text-gray-400 group-hover:text-blue-400 transition-colors" />
+                                <span className="text-[10px] font-medium text-gray-300 group-hover:text-white transition-colors text-center leading-tight">
+                                    {comp.label}
+                                </span>
+                                
+                                {/* Hover Add Icon */}
+                                <div className="absolute top-1.5 right-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <Plus size={12} className="text-blue-400" />
+                                </div>
+                            </button>
+                        );
+                    })}
+                </div>
+
             </div>
         </div>
     );

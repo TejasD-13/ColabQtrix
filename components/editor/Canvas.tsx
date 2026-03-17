@@ -5,7 +5,7 @@ import { useEditor } from './EditorProvider';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import DynamicRenderer, { SectionData } from '@/lib/renderer';
-import { GripVertical, Trash2, PlusCircle } from 'lucide-react';
+import { GripHorizontal, Trash2, ArrowDownToLine } from 'lucide-react';
 
 export default function Canvas() {
     const { sections, selectedSectionId, setSelectedSectionId, setSections } = useEditor();
@@ -23,28 +23,36 @@ export default function Canvas() {
 
     return (
         <div className="w-full flex justify-center pb-32 min-h-full">
-            <div className="w-full bg-white shadow-2xl min-h-[800px] transition-all relative">
-                {/* Subtle grid background for empty state feeling */}
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay" />
+            <div className="w-full max-w-[1400px] bg-white shadow-xl min-h-[800px] transition-all relative border border-gray-200">
+                
+                {/* Dotted Grid Background */}
+                <div 
+                    className="absolute inset-0 pointer-events-none opacity-[0.03]" 
+                    style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '16px 16px' }}
+                />
 
                 {sections.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center h-full text-gray-400 space-y-4">
-                        <div className="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center border-2 border-dashed border-gray-200">
-                            <PlusCircle size={32} className="text-gray-300" />
+                    <div className="flex flex-col items-center justify-center h-full text-gray-400 space-y-4 relative z-10">
+                        <div className="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center border border-dashed border-gray-300">
+                            <ArrowDownToLine size={24} className="text-gray-400" />
                         </div>
-                        <p className="text-lg font-medium text-gray-500">Your canvas is empty</p>
-                        <p className="text-sm">Click a component on the left to get started.</p>
+                        <div className="text-center">
+                            <p className="text-sm font-semibold text-gray-700">Canvas is empty</p>
+                            <p className="text-xs text-gray-500 mt-1">Select a component from the left panel to begin building.</p>
+                        </div>
                     </div>
                 ) : (
-                    sections.map((section) => (
-                        <SortableSectionItem
-                            key={section.id}
-                            section={section}
-                            isSelected={selectedSectionId === section.id}
-                            onSelect={() => setSelectedSectionId(section.id)}
-                            onDelete={(e) => handleDelete(e, section.id)}
-                        />
-                    ))
+                    <div className="relative z-10 flex flex-col">
+                        {sections.map((section) => (
+                            <SortableSectionItem
+                                key={section.id}
+                                section={section}
+                                isSelected={selectedSectionId === section.id}
+                                onSelect={() => setSelectedSectionId(section.id)}
+                                onDelete={(e) => handleDelete(e, section.id)}
+                            />
+                        ))}
+                    </div>
                 )}
             </div>
         </div>
@@ -81,39 +89,59 @@ function SortableSectionItem({
         <div
             ref={setNodeRef}
             style={style}
-            className={`relative group cursor-pointer transition-all duration-200 ${isSelected
-                ? 'ring-4 ring-blue-500/50 z-40 outline outline-2 outline-blue-600 outline-offset-[-2px]'
-                : 'hover:ring-4 hover:ring-blue-400/30 z-10'
-                } ${isDragging ? 'opacity-40 scale-[0.98] shadow-2xl blur-[1px]' : 'opacity-100'}`}
+            className={`relative group cursor-pointer transition-all duration-150 ${
+                isSelected
+                    ? 'ring-2 ring-blue-500 z-40'
+                    : 'hover:ring-1 hover:ring-blue-300 z-10'
+                } ${isDragging ? 'opacity-50 scale-[0.99] shadow-2xl' : 'opacity-100'}`}
             onClick={onSelect}
         >
-            {/* Editor Controls Overlay */}
-            <div className={`absolute top-4 right-4 transition-all duration-200 z-50 flex gap-2 ${isSelected ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0'}`}>
+            {/* Editor Controls Overlay - technical style */}
+            <div className={`absolute top-0 left-0 w-full h-0 z-50 flex items-start justify-center transition-opacity duration-150 ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                
+                {/* Top Center Drag Handle */}
                 <div
                     {...attributes}
                     {...listeners}
-                    className="p-2.5 bg-white/95 backdrop-blur shadow-lg border border-gray-100 rounded-xl cursor-grab active:cursor-grabbing text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                    className="absolute -top-3 px-3 py-1 bg-blue-500 text-white rounded-t-none rounded-b-md cursor-grab active:cursor-grabbing shadow-sm flex items-center justify-center"
                     title="Drag to reorder"
                 >
-                    <GripVertical size={18} />
+                    <GripHorizontal size={14} className="opacity-80" />
                 </div>
-                <button
-                    onClick={onDelete}
-                    className="p-2.5 bg-white/95 backdrop-blur shadow-lg border border-red-100 rounded-xl text-red-500 hover:text-white hover:bg-red-500 transition-colors"
-                    title="Delete Section"
-                >
-                    <Trash2 size={18} />
-                </button>
+
+                {/* Top Right Controls */}
+                <div className="absolute top-2 right-2 flex gap-1">
+                    <div className="px-2 py-1 bg-blue-500 text-white text-[10px] font-bold tracking-widest uppercase rounded shadow-sm hidden md:block">
+                        {section.type.replace(/_/g, ' ')}
+                    </div>
+                    <button
+                        onClick={onDelete}
+                        className="p-1 min-w-[28px] bg-white border border-gray-200 shadow-sm rounded text-gray-500 hover:text-red-600 hover:border-red-200 hover:bg-red-50 transition-colors flex items-center justify-center"
+                        title="Delete Element"
+                    >
+                        <Trash2 size={12} />
+                    </button>
+                </div>
             </div>
 
+            {/* If selected, add structural border elements */}
+            {isSelected && (
+                <>
+                    <div className="absolute -top-1 -left-1 w-2 h-2 bg-white border-2 border-blue-500 z-50 pointer-events-none" />
+                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-white border-2 border-blue-500 z-50 pointer-events-none" />
+                    <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-white border-2 border-blue-500 z-50 pointer-events-none" />
+                    <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-white border-2 border-blue-500 z-50 pointer-events-none" />
+                </>
+            )}
+
             {/* Render Actual Component */}
-            <div className={`pointer-events-none relative z-10 w-full overflow-hidden transition-all duration-300 ${isDragging ? 'rounded-xl' : ''}`}>
+            <div className={`pointer-events-none relative z-10 w-full overflow-hidden transition-all duration-200 ${isDragging ? 'rounded' : ''} bg-white`}>
                 <DynamicRenderer sections={[section]} />
             </div>
 
             {/* Selection Overlay Tint */}
             {isSelected && !isDragging && (
-                <div className="absolute inset-0 bg-blue-500/5 pointer-events-none z-20" />
+                <div className="absolute inset-0 bg-blue-500/[0.02] pointer-events-none z-20" />
             )}
         </div>
     );
