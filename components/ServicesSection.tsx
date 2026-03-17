@@ -34,7 +34,7 @@ export default function ServicesSection({
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
 
         {/* HEADER */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -62,7 +62,7 @@ export default function ServicesSection({
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
 
           {/* LEFT SIDE - Content Area */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -70,7 +70,7 @@ export default function ServicesSection({
             className="lg:col-span-5 flex flex-col justify-center order-2 lg:order-1 relative h-full min-h-[400px]"
           >
             <AnimatePresence mode="wait">
-              <motion.div 
+              <motion.div
                 key={activeIndex}
                 initial={{ opacity: 0, y: 20, filter: 'blur(4px)' }}
                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -106,7 +106,7 @@ export default function ServicesSection({
           </motion.div>
 
           {/* RIGHT SIDE - Interactive Wheel Container */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -115,7 +115,7 @@ export default function ServicesSection({
           >
             {/* Extremely Premium Dark Container for Wheel */}
             <div className="w-full bg-[#184d47] rounded-[3rem] p-10 md:p-16 relative overflow-hidden shadow-[0_40px_80px_-20px_rgba(24,77,71,0.3)] border border-[#2f5f5b]">
-              
+
               {/* Internal Glowing Orbs for the dark container */}
               <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#2f5f5b] rounded-full blur-[80px] opacity-70" />
               <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#e8dcb5]/10 rounded-full blur-[80px]" />

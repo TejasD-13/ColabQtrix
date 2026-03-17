@@ -41,7 +41,7 @@ export default function HeroSection({
         to ensure text contrast while keeping the edges moody and cinematic.
       */}
       <div className="absolute inset-0 bg-gradient-to-t from-[#0a1118] via-transparent to-black/30 z-0" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#000000_120%)] z-0 opacity-100" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#000000_180%)] z-0 opacity-100" />
 
       {/* Main Content Container */}
       <div className="relative z-10 max-w-[1000px] mx-auto px-6 flex flex-col items-center text-center">
