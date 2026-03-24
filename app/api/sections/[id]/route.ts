@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 /**
  * PATCH /api/sections/:id — Update section content
  * DELETE /api/sections/:id — Remove a section
