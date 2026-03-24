@@ -16,10 +16,25 @@ if (
   process.env.DATABASE_URL = rawDatabaseUrl.slice(1, -1);
 }
 
-const db = global.prisma || new PrismaClient();
+function getPrismaClient() {
+  if (global.prisma) {
+    return global.prisma;
+  }
 
-if (process.env.NODE_ENV !== 'production') {
-  global.prisma = db;
+  const client = new PrismaClient();
+
+  if (process.env.NODE_ENV !== 'production') {
+    global.prisma = client;
+  }
+
+  return client;
 }
+
+const db = new Proxy({} as PrismaClient, {
+  get(_target, prop) {
+    const client = getPrismaClient();
+    return client[prop as keyof PrismaClient];
+  },
+});
 
 export default db;
